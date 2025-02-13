@@ -582,6 +582,8 @@ where
                 MetadataBlock(MetadataBlockKind::PlusesStyle) => formatter.write_str("+++\n"),
                 List(_) => Ok(()),
                 Strikethrough => formatter.write_str("~~"),
+                Superscript => formatter.write_char('^'),
+                Subscript => formatter.write_char('~'),
                 DefinitionList => Ok(()),
                 DefinitionListTitle => {
                     if state.newlines_before_start < options.newlines_after_rest {
@@ -837,6 +839,8 @@ where
                 Ok(())
             }
             TagEnd::Strikethrough => formatter.write_str("~~"),
+            TagEnd::Superscript => formatter.write_char('^'),
+            TagEnd::Subscript => formatter.write_char('~'),
             TagEnd::DefinitionList => {
                 if state.newlines_before_start < options.newlines_after_list {
                     state.newlines_before_start = options.newlines_after_list;
