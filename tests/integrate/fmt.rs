@@ -302,6 +302,11 @@ mod inline_elements {
     }
 
     #[test]
+    fn sub_and_superscript() {
+        assert_eq!(fmts_both("^superscript^ ~subscript~").0, "^superscript^ ~subscript~",);
+    }
+
+    #[test]
     fn code_double_backtick() {
         let mut state = State::default();
         state.newlines_before_start = 2;
