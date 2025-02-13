@@ -250,6 +250,15 @@ mod inline_elements {
     }
 
     #[test]
+    fn wiki_links() {
+        {
+            let mut state = State::default();
+            state.newlines_before_start = 2;
+            assert_eq!(fmts_both("[[a]]\n[[c|d]]"), ("[[a]]\n[[c|d]]".into(), state));
+        }
+    }
+
+    #[test]
     fn shortcut_code_links() {
         let mut state = State::default();
         state.newlines_before_start = 2;
