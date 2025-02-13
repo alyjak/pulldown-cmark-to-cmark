@@ -422,6 +422,7 @@ where
                         }
                         LinkType::Reference => {
                             formatter.write_char('[')?;
+                            state.current_shortcut_text = Some(String::new());
                             LinkCategory::Reference {
                                 uri: dest_url.clone().into(),
                                 title: title.clone().into(),
@@ -618,10 +619,14 @@ where
             } {
                 LinkCategory::AngleBracketed => formatter.write_char('>'),
                 LinkCategory::Reference { uri, title, id } => {
+                    if let Some(shortcut_text) = state.current_shortcut_text.take() {
+                        if !shortcut_text.is_empty() {
+                            formatter.write_str("][")?;
+                        }
+                    }
                     state
                         .shortcuts
                         .push((id.to_string(), uri.to_string(), title.to_string()));
-                    formatter.write_str("][")?;
                     formatter.write_str(&id)?;
                     formatter.write_char(']')
                 }
