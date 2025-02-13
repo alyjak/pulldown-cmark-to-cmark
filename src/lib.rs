@@ -116,6 +116,7 @@ pub enum LinkCategory<'a> {
         uri: Cow<'a, str>,
         title: Cow<'a, str>,
     },
+    WikiLink,
     Other {
         uri: Cow<'a, str>,
         title: Cow<'a, str>,
@@ -443,6 +444,14 @@ where
                                 title: title.clone().into(),
                             }
                         }
+                        LinkType::WikiLink { has_pothole } => {
+                            formatter.write_str("[[")?;
+                            if *has_pothole {
+                                formatter.write_str(&dest_url)?;
+                                formatter.write_char('|')?;
+                            }
+                            LinkCategory::WikiLink
+                        }
                         _ => {
                             formatter.write_char('[')?;
                             LinkCategory::Other {
@@ -632,6 +641,7 @@ where
                     }
                     formatter.write_char(']')
                 }
+                LinkCategory::WikiLink => formatter.write_str("]]"),
                 LinkCategory::Other { uri, title } => close_link(&uri, &title, formatter, LinkType::Inline),
             },
             TagEnd::Image => match if let Some(img_link) = state.image_stack.pop() {
