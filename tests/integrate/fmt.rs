@@ -238,6 +238,16 @@ mod inline_elements {
     }
 
     #[test]
+    fn reference_links() {
+        let mut state = State::default();
+        state.newlines_before_start = 2;
+        assert_eq!(
+            fmts_both("[c][d]\n\n[d]\n\n[d]: e"),
+            ("[c][d]\n\n[d]\n\n[d]: e".into(), state)
+        );
+    }
+
+    #[test]
     fn shortcut_links() {
         {
             let mut state = State::default();
